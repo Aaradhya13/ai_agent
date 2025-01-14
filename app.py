@@ -3,6 +3,7 @@ import speech_recognition as sr
 from textblob import TextBlob  # For sentiment analysis
 import pyttsx3  # For text-to-speech
 
+
 def main():
     # Page configuration
     st.set_page_config(page_title="Voice Feedback System", layout="centered")
@@ -52,24 +53,36 @@ def main():
     st.markdown("<div class='box' style='text-align: center;'>", unsafe_allow_html=True)
     st.markdown("### Voice Input")
 
-    if st.button("🎤 Speak"):
-        user_input = speech_to_text()
-        if user_input:
-            sentiment = analyze_text(user_input)
+    # Check microphone availability
+    if check_microphone_availability():
+        if st.button("🎤 Speak"):
+            user_input = speech_to_text()
+            if user_input:
+                sentiment = analyze_text(user_input)
 
-            # Formulate Response
-            if sentiment == "POSITIVE":
-                response = "Thank you for your positive feedback! I appreciate it."
-            elif sentiment == "NEGATIVE":
-                response = "I'm sorry to hear that. How can I help you further?"
+                # Formulate Response
+                if sentiment == "POSITIVE":
+                    response = "Thank you for your positive feedback! I appreciate it."
+                elif sentiment == "NEGATIVE":
+                    response = "I'm sorry to hear that. How can I help you further?"
+                else:
+                    response = "Thank you for sharing your thoughts."
+
+                text_to_speech(response)  # Speak the response
+                st.write("Model Response:", response)
             else:
-                response = "Thank you for sharing your thoughts."
-
-            text_to_speech(response)  # Speak the response
-            st.write("Model Response:", response)
-        else:
-            st.error("No input detected. Please try speaking again.")
+                st.error("No input detected. Please try speaking again.")
+    else:
+        st.error("No microphone detected. Please connect a microphone and refresh the page.")
     st.markdown("</div>", unsafe_allow_html=True)
+
+
+def check_microphone_availability():
+    """Check if at least one microphone is available."""
+    microphones = sr.Microphone.list_microphone_names()
+    if not microphones:
+        return False
+    return True
 
 
 def speech_to_text():
@@ -85,9 +98,6 @@ def speech_to_text():
         except sr.RequestError as e:
             st.error(f"Could not request results from Google Speech Recognition service; {e}")
         return None
-
-
-from textblob import TextBlob
 
 
 def analyze_text(text):
