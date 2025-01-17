@@ -31,5 +31,4 @@ An AI-powered phone agent for real-time customer interaction with voice input, s
 ## Check it out:
 https://drive.google.com/file/d/1jI7CL42HhFAxya9xF3YEDZhhA1jOwgHl/view?usp=sharing
 
-## Our PPT:
-https://www.canva.com/design/DAGcItI-9A8/5ckiXOtQ5FkszTO_E5N7rg/edit?utm_content=DAGcItI-9A8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
